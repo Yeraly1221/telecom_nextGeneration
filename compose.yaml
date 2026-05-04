@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:15
+    container_name: user_structure
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: jwt_security
+    ports:
+      - "5332:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
