@@ -2,7 +2,6 @@ package com.qazaq.telecom.security.configuration;
 
 import com.qazaq.telecom.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.security.autoconfigure.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

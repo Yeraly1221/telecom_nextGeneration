@@ -10,9 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Builder
 @Data
-@Getter
-@Setter
 @Entity
 @Table(name = "_user")
 @AllArgsConstructor
