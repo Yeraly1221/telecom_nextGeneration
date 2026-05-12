@@ -1,6 +1,6 @@
 package com.qazaq.telecom.security.configuration;
 
-import com.qazaq.telecom.security.user.UserRepository;
+import com.qazaq.telecom.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> customerRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Customer not found"));
     }
     /*
     Это у нас функциональный интерфейс который работает с методом loadUserByName

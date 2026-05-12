@@ -1,4 +1,4 @@
-package com.qazaq.telecom.security.user;
+package com.qazaq.telecom.customer;
 
 public enum Role {
     USER,

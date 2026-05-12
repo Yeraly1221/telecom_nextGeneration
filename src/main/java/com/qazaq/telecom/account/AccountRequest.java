@@ -1,15 +1,16 @@
-package com.qazaq.telecom.security.auth;
+package com.qazaq.telecom.account;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-    private String token;
-    private String message;
+public class AccountRequest {
+
+    private Double balance;
 }

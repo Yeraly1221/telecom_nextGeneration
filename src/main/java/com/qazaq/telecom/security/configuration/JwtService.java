@@ -6,6 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +47,13 @@ Signaure это уже шифроание а HMACSHA256 хэш функция
  */
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "to6OxVh41PKr5a/z+5NXKge+moMt7Fpjrgm4xpqpzb8=";
+    // private static final String SECRET_KEY = "to6OxVh41PKr5a/z+5NXKge+moMt7Fpjrgm4xpqpzb8=";
 
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey; // это вместо SECRET_KEY
+
+    @Value("${application.security.jwt.expiration}")
+    private long expiration; // это срок по котророму истечет токен
     /*public String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails) {
@@ -63,12 +70,13 @@ public class JwtService {
     */
 
 
+
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .claims(extraClaims)          // ← дополнительные данные в токен
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 86400000))
+                .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey())
                 .compact();
     }
@@ -77,7 +85,7 @@ public class JwtService {
     уже эти байты преврашяются в обект Key который используется для подписования ключом и пробверки
      */
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

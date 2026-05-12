@@ -1,15 +1,15 @@
-package com.qazaq.telecom.security.auth;
+package com.qazaq.telecom.simcard;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-    private String token;
-    private String message;
+public class GetPhoneNumberRequest {
+
+    private String phoneNumber;
 }

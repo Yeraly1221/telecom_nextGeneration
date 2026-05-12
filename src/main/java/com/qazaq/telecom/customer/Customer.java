@@ -1,5 +1,7 @@
-package com.qazaq.telecom.security.user;
+package com.qazaq.telecom.customer;
 
+import com.qazaq.telecom.account.Account;
+import com.qazaq.telecom.simcard.SimCard;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jspecify.annotations.NullMarked;
@@ -7,6 +9,8 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,10 +20,11 @@ import java.util.List;
 @Table(name = "_user")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class Customer implements UserDetails {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
+
 
     private String firstName;
 
@@ -29,8 +34,27 @@ public class User implements UserDetails {
 
     private String password;
 
+    private Boolean enabled = false; // у нас не активен до подтверждения email
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    // When object will creating createdAt will set with local time
+    protected void setCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    List<SimCard> simCards = new ArrayList<>();
+
 
     @Override
     public @NullMarked Collection<? extends GrantedAuthority> getAuthorities() {
@@ -45,7 +69,7 @@ public class User implements UserDetails {
 
     @Override
     public @NullMarked String  getUsername() {
-        return firstName;
+        return email; //это логин
     }
 
     @Override
