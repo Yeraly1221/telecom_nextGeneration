@@ -13,7 +13,5 @@ import lombok.NoArgsConstructor;
 public class PaymentRequest {
     private Double amount;
 
-    private TransactionType transactionType;
-
     private PaymentType paymentType;
 }

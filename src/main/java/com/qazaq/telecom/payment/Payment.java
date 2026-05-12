@@ -26,6 +26,11 @@ public class Payment {
             name = "amount")
     private Double amount;
 
+    @Column(name = "transaction_type",
+            nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+
 
     @Column(name = "payment_type",
             nullable = false)
@@ -33,8 +38,6 @@ public class Payment {
     private PaymentType paymentType;
 
 
-    @Column(name = "transaction_type", nullable = false)
-    private TransactionType transactionType;
 
 
     @Column(name = "created_at", updatable = false)

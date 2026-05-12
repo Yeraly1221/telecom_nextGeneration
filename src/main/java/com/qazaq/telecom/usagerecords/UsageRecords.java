@@ -31,8 +31,6 @@ public class UsageRecords {
     private Double payed;
 
 
-
-
     @Enumerated(EnumType.STRING)
     @Column(name = "traffic_type")
     public TrafficType trafficType;
