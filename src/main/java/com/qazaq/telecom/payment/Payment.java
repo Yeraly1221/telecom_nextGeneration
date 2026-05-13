@@ -48,8 +48,8 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "account")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
 }

@@ -36,4 +36,17 @@ public class PaymentService {
 
         paymentRepository.save(payment);
     }
+
+    public GetPaymentRequest getPayment(Long payment_id){
+        Payment payment = paymentRepository.findPaymentById(payment_id)
+                .orElseThrow(() -> new BusinessException("Payment not found"));
+
+        return GetPaymentRequest.builder()
+                .amount(payment.getAmount())
+                .transactionType(payment.getTransactionType())
+                .paymentType(payment.getPaymentType())
+                .createdAt(payment.getCreatedAt())
+                .build();
+
+    }
 }

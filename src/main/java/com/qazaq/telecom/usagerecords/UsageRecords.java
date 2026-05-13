@@ -49,4 +49,13 @@ public class UsageRecords {
     @ManyToOne
     @JoinColumn(name = "subscription_id")
     private Subscription subscription;
+
+    // Compatibility for callers/tests that use the name "amount" for this field.
+    public Double getAmount() {
+        return payed;
+    }
+
+    public void setAmount(Double amount) {
+        this.payed = amount;
+    }
 }

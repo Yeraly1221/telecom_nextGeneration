@@ -20,9 +20,11 @@ public class UsageRecordService {
         Subscription subscription = subscriptionRepository.findSubscriptionById(subscription_id)
                 .orElseThrow(() -> new BusinessException("Subscription not found"));
 
+        Double amount = getUsageRecord.getAmount() != null ? getUsageRecord.getAmount() : getUsageRecord.getPayed();
+
         UsageRecords usageRecords = UsageRecords.builder()
                 .usedTraffic(getUsageRecord.getUsedTraffic())
-                .payed(getUsageRecord.getPayed())
+                .payed(amount)
                 .trafficType(getUsageRecord.getTrafficType())
                 .subscription(subscription)
                 .build();

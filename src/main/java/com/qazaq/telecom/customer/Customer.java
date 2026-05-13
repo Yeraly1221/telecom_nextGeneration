@@ -89,6 +89,6 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return Boolean.TRUE.equals(enabled);
     }
 }

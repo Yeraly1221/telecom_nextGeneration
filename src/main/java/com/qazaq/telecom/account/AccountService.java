@@ -38,7 +38,7 @@ public class AccountService {
         Payment payment = Payment.builder()
                 .amount(paymentRequest.getAmount())
                 .paymentType(paymentRequest.getPaymentType())
-                .transactionType(TransactionType.WITHDRAWS)
+                .transactionType(TransactionType.WITHDRAW)
                 .account(account)
                 .build();
         paymentRepository.save(payment);

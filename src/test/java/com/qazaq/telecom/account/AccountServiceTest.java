@@ -1,6 +1,9 @@
 package com.qazaq.telecom.account;
 
 import com.qazaq.telecom.exception.BusinessException;
+import com.qazaq.telecom.payment.PaymentRepository;
+import com.qazaq.telecom.payment.PaymentRequest;
+import com.qazaq.telecom.payment.PaymentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -22,6 +25,9 @@ class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
+    @Mock
+    private PaymentRepository paymentRepository;
+
     @InjectMocks
     private AccountService accountService;
 
@@ -30,7 +36,10 @@ class AccountServiceTest {
         Account account = Account.builder().id(1L).balance(100.0).build();
         when(accountRepository.findAccountById(1L)).thenReturn(Optional.of(account));
 
-        accountService.withDrawBalance(1L, 40.0);
+        accountService.withDrawBalance(1L, PaymentRequest.builder()
+                .amount(40.0)
+                .paymentType(PaymentType.CARD)
+                .build());
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(captor.capture());
@@ -44,7 +53,10 @@ class AccountServiceTest {
 
         BusinessException exception = assertThrows(
                 BusinessException.class,
-                () -> accountService.withDrawBalance(1L, 40.0)
+                () -> accountService.withDrawBalance(1L, PaymentRequest.builder()
+                        .amount(40.0)
+                        .paymentType(PaymentType.CARD)
+                        .build())
         );
 
         assertEquals("You do not have enough money on balance", exception.getMessage());
@@ -56,7 +68,10 @@ class AccountServiceTest {
         Account account = Account.builder().id(1L).balance(25.0).build();
         when(accountRepository.findAccountById(1L)).thenReturn(Optional.of(account));
 
-        accountService.depositBalance(1L, 15.0);
+        accountService.depositBalance(1L, PaymentRequest.builder()
+                .amount(15.0)
+                .paymentType(PaymentType.CARD)
+                .build());
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(captor.capture());
@@ -70,7 +85,10 @@ class AccountServiceTest {
 
         BusinessException exception = assertThrows(
                 BusinessException.class,
-                () -> accountService.depositBalance(1L, -1.0)
+                () -> accountService.depositBalance(1L, PaymentRequest.builder()
+                        .amount(-1.0)
+                        .paymentType(PaymentType.CASH)
+                        .build())
         );
 
         assertEquals("amount can not be lower then 0", exception.getMessage());

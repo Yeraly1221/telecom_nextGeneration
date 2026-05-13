@@ -16,5 +16,8 @@ public class GetUsageRecord {
 
     private Double payed;
 
+    // Compatibility with older naming; maps to the same concept as "payed"
+    private Double amount;
+
     private TrafficType trafficType;
 }

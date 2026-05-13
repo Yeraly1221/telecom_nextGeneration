@@ -17,6 +17,11 @@ public class SimCardService {
     public final SimCardRepository simCardRepository;
     public final CustomerRepository customerRepository;
 
+    // Backward-compatible name (some callers/tests use this)
+    @Transactional
+    public void getSimCard(Long customer_id, GetSimCardRequest request) {
+        createSimCard(customer_id, request);
+    }
 
     @Transactional
     public void  createSimCard(Long customer_id, GetSimCardRequest request){

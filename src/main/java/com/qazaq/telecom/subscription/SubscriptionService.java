@@ -47,7 +47,6 @@ public class SubscriptionService {
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now().plusMonths(1))
                 .subscriptionStatus(SubscriptionStatus.ACTIVE)
-                .simCard(simCard)
                 .tariff(tariff)
                 .build();
         subscriptionRepository.save(subscription);
@@ -56,7 +55,9 @@ public class SubscriptionService {
         tariff.addSubscription(subscription);
         tariffRepository.save(tariff);
 
+        // Owning side is SimCard.subscription (Subscription.simCard is mappedBy)
         simCard.setSubscription(subscription);
+        subscription.setSimCard(simCard);
         simCardRepository.save(simCard);
     }
 

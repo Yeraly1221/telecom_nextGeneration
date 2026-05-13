@@ -1,7 +1,7 @@
 package com.qazaq.telecom.payment;
 
 public enum TransactionType {
-    WITHDRAWS,
+    WITHDRAW,
     DEPOSIT,
     ONLINE
 }

@@ -63,8 +63,7 @@ public class Subscription {
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "simCard_id")
+    @OneToOne(mappedBy = "subscription")
     private SimCard simCard;
 
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL)

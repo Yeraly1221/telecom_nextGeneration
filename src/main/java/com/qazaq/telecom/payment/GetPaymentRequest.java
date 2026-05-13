@@ -6,14 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentRequest {
+public class GetPaymentRequest {
+
     private Double amount;
+
+    private TransactionType transactionType;
 
     private PaymentType paymentType;
 
-    private TransactionType transactionType;
+    private LocalDateTime createdAt;
 }
