@@ -13,36 +13,36 @@ It provides REST APIs to:
 
 ### Registration
 <p align="center">
-  <img src="docs/screenshots/registration-form.png" width="400" alt="Registration Form">
-  <img src="docs/screenshots/registration-confirm-email.png" width="400" alt="Check Email Prompt">
+  <img src="docs/screenshots/registrform.png" width="400" alt="Registration Form">
+  <img src="docs/screenshots/registrconfirm.png" width="400" alt="Check Email Prompt">
 </p>
 
 ### Email Confirmation (MailDev)
 <p align="center">
-  <img src="docs/screenshots/maildev-confirm.png" width="700" alt="MailDev Email Confirmation">
-  <img src="docs/screenshots/email-confirmed-json.png" width="700" alt="Email Confirmed Response">
+  <img src="docs/screenshots/maildevconf.png" width="700" alt="MailDev Email Confirmation">
+  <img src="docs/screenshots/emailconf.png" width="700" alt="Email Confirmed Response">
 </p>
 
 ### Database — User Record
 <p align="center">
-  <img src="docs/screenshots/db-user.png" width="800" alt="User in PostgreSQL">
+  <img src="docs/screenshots/userindock.png" width="800" alt="User in PostgreSQL">
 </p>
 
 ### SIM Card Creation
 <p align="center">
-  <img src="docs/screenshots/sim-create.png" width="400" alt="Create SIM Card">
-  <img src="docs/screenshots/sim-created.png" width="400" alt="SIM Card Created">
+  <img src="docs/screenshots/simcreate.png" width="400" alt="Create SIM Card">
+  <img src="docs/screenshots/simcreated.png" width="400" alt="SIM Card Created">
 </p>
 
 ### Database — SIM Card Record
 <p align="center">
-  <img src="docs/screenshots/db-simcard.png" width="600" alt="SIM Card in PostgreSQL">
+  <img src="docs/screenshots/siminsql.png" width="600" alt="SIM Card in PostgreSQL">
 </p>
 
 ### Deposit Balance
 <p align="center">
-  <img src="docs/screenshots/deposit-form.png" width="400" alt="Deposit Form">
-  <img src="docs/screenshots/deposit-success.png" width="400" alt="Deposit Successful">
+  <img src="docs/screenshots/depositform.png" width="400" alt="Deposit Form">
+  <img src="docs/screenshots/depositsucc.png" width="400" alt="Deposit Successful">
 </p>
 
 ### Database — Account Balance
