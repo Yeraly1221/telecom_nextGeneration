@@ -47,13 +47,13 @@ It provides REST APIs to:
 
 ### Database — Account Balance
 <p align="center">
-  <img src="docs/screenshots/db-balance.jpg" width="400" alt="Balance in PostgreSQL">
+  <img src="docs/screenshots/accountinsql.jpg" width="400" alt="Balance in PostgreSQL">
 </p>
 
 ### Sign In
 <p align="center">
   <img src="docs/screenshots/signin.jpg" width="400" alt="Sign In Form">
-  <img src="docs/screenshots/signininsuc.jpg" width="400" alt="Logged In">
+  <img src="docs/screenshots/sigininsuc.jpg" width="400" alt="Logged In">
 </p>
 
 ### Customer Information
