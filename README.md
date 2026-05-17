@@ -52,13 +52,13 @@ It provides REST APIs to:
 
 ### Sign In
 <p align="center">
-  <img src="docs/screenshots/signin-form.jpg" width="400" alt="Sign In Form">
-  <img src="docs/screenshots/signin-success.jpg" width="400" alt="Logged In">
+  <img src="docs/screenshots/signin.jpg" width="400" alt="Sign In Form">
+  <img src="docs/screenshots/signininsuc.jpg" width="400" alt="Logged In">
 </p>
 
 ### Customer Information
 <p align="center">
-  <img src="docs/screenshots/customer-info.jpg" width="400" alt="Customer Information">
+  <img src="docs/screenshots/customerinfo.jpg" width="400" alt="Customer Information">
 </p>
 
 ---
