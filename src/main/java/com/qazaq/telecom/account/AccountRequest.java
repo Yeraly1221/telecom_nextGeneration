@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountRequest {
 
-    private Double balance;
+    private Double amount;
 }

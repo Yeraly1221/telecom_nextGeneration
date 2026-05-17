@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/simcard")
+@RequestMapping("/api/v1/simcard")
 @RequiredArgsConstructor
 public class SimCardController {
 
     private final SimCardService simCardService;
 
-    @PostMapping("/getSimCard/{id}")
-    public void GetSimCard(@PathVariable Long id, @RequestBody GetSimCardRequest getSimCardRequest){
-        simCardService.getSimCard(id, getSimCardRequest);
+    @PostMapping("/makeSimCard/{customerId}")
+    public void MakeSimCard(@PathVariable Long customerId, @RequestBody GetSimCardRequest getSimCardRequest){
+        simCardService.makeSimCard(customerId, getSimCardRequest);
     }
 
     @GetMapping("/getPhoneNumber/{id}")

@@ -15,5 +15,4 @@ public class PaymentRequest {
 
     private PaymentType paymentType;
 
-    private TransactionType transactionType;
 }

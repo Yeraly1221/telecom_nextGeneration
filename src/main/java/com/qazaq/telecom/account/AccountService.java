@@ -48,6 +48,7 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    @Transactional
     public void  depositBalance(Long id, PaymentRequest paymentRequest){
         Account account = accountRepository.findAccountById(id)
                 .orElseThrow(() -> new BusinessException("Account not found"));
@@ -78,7 +79,7 @@ public class AccountService {
                 .orElseThrow(() -> new BusinessException("Account not found"));
 
         return AccountRequest.builder()
-                .balance(account.getBalance())
+                .amount(account.getBalance())
                 .build();
     }
 

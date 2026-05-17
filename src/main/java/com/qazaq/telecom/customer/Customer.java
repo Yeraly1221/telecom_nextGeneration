@@ -1,6 +1,7 @@
 package com.qazaq.telecom.customer;
 
 import com.qazaq.telecom.account.Account;
+import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.simcard.SimCard;
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,6 +56,12 @@ public class Customer implements UserDetails {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     List<SimCard> simCards = new ArrayList<>();
 
+    public SimCard getSimCard(){
+        if(simCards.size() == 0){
+            throw  new BusinessException("Customer does not have number");
+        }
+        return simCards.get(0);
+    }
 
     @Override
     public @NullMarked Collection<? extends GrantedAuthority> getAuthorities() {

@@ -19,7 +19,7 @@ public class SimCardService {
 
     // Backward-compatible name (some callers/tests use this)
     @Transactional
-    public void getSimCard(Long customer_id, GetSimCardRequest request) {
+    public void makeSimCard(Long customer_id, GetSimCardRequest request) {
         createSimCard(customer_id, request);
     }
 
@@ -30,7 +30,7 @@ public class SimCardService {
         }
 
 
-        if(simCardRepository.existsSimCardByPhoneNumber(request.getNumber())){
+        if(simCardRepository.existsSimCardByPhoneNumber(request.getPhoneNumber())){
             throw new BusinessException("Sim Card already exist");
         }
 
@@ -39,7 +39,7 @@ public class SimCardService {
 
         SimCard simCard = SimCard
                 .builder()
-                .phoneNumber(request.getNumber())
+                .phoneNumber(request.getPhoneNumber())
                 .customer(customer)
                 .build();
 

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetSimCardRequest {
-    private String number;
+    private String phoneNumber;
 }

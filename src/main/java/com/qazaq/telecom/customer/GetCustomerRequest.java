@@ -17,6 +17,8 @@ public class GetCustomerRequest {
 
     private String lastName;
 
+    private String phoneNumber;
+
 
     private String email;
 

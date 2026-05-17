@@ -10,9 +10,9 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping("/registration/{id}")
-    public GetCustomerRequest GetCustomerInfo(@PathVariable Long id){
-       return customerService.getInfoAboutCustomer(id);
+    @PostMapping("/registration/{customerId}")
+    public GetCustomerRequest GetCustomerInfo(@PathVariable Long customerId){
+       return customerService.getInfoAboutCustomer(customerId);
     }
 
 }

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sim Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+        }
+
+        .main h2 {
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <h2>Create Sim Card</h2>
+    <form action="">
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" name="phoneNumber" id="phoneNumber" required />
+
+
+        <button type="button" onclick="create()">Create</button>
+    </form>
+</div>
+
+<script>
+
+    async function create() {
+
+        const urlParams =
+            new URLSearchParams(window.location.search);
+
+        const customerId =
+            urlParams.get("customerId");
+
+        const data = {
+            phoneNumber: document.getElementById("phoneNumber").value
+
+        };
+
+        const response = await fetch(
+            "/api/v1/simcard/makeSimCard/" + customerId,
+
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+        );
+
+        const result = await response.text();
+        if (!response.ok) {
+            alert("Failed to create SIM card: " + result);
+            return;
+        }
+
+        alert(result || "SIM card created!");
+
+
+    }
+
+</script>
+
+</body>
+</html>

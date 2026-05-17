@@ -16,7 +16,7 @@ public class PaymentService {
     public final AccountRepository accountRepository;
 
 
-    public void addPayment(Long account_id, PaymentRequest paymentRequest){
+   /* public void addPayment(Long account_id, PaymentRequest paymentRequest){
         Account account = accountRepository.findAccountById(account_id)
                 .orElseThrow(() -> new BusinessException("Account not found"));
 
@@ -36,6 +36,8 @@ public class PaymentService {
 
         paymentRepository.save(payment);
     }
+
+    */
 
     public GetPaymentRequest getPayment(Long payment_id){
         Payment payment = paymentRepository.findPaymentById(payment_id)

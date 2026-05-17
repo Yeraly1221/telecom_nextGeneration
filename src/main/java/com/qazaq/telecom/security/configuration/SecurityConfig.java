@@ -27,10 +27,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 //Зашита о межсайтовых запросов отключаем
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "/api/v1/auth/**",          // регистрация и логин
-                                        "/api/v1/registration/**"   // подтверждение email
-                                ).permitAll()
+
+                                .requestMatchers("/**").permitAll()  // подтверждение email
+                                
                         .anyRequest().authenticated()
                         //тут мы даем дабро все кто кидает запрос с url /api/public/**
                 )

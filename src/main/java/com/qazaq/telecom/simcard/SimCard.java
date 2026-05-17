@@ -22,7 +22,7 @@ public class SimCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, name = "phone_number")
+    @Column(unique = true, name = "phone_number")
     private String phoneNumber;
 
     @ManyToOne
