@@ -13,52 +13,52 @@ It provides REST APIs to:
 
 ### Registration
 <p align="center">
-  <img src="docs/screenshots/registrform.png" width="400" alt="Registration Form">
-  <img src="docs/screenshots/registrconfirm.png" width="400" alt="Check Email Prompt">
+  <img src="docs/screenshots/registrform.jpg" width="400" alt="Registration Form">
+  <img src="docs/screenshots/registrconfirm.jpg" width="400" alt="Check Email Prompt">
 </p>
 
 ### Email Confirmation (MailDev)
 <p align="center">
-  <img src="docs/screenshots/maildevconf.png" width="700" alt="MailDev Email Confirmation">
-  <img src="docs/screenshots/emailconf.png" width="700" alt="Email Confirmed Response">
+  <img src="docs/screenshots/maildevconf.jpg" width="700" alt="MailDev Email Confirmation">
+  <img src="docs/screenshots/emailconf.jpg" width="700" alt="Email Confirmed Response">
 </p>
 
 ### Database — User Record
 <p align="center">
-  <img src="docs/screenshots/userindock.png" width="800" alt="User in PostgreSQL">
+  <img src="docs/screenshots/userindock.jpg" width="800" alt="User in PostgreSQL">
 </p>
 
 ### SIM Card Creation
 <p align="center">
-  <img src="docs/screenshots/simcreate.png" width="400" alt="Create SIM Card">
-  <img src="docs/screenshots/simcreated.png" width="400" alt="SIM Card Created">
+  <img src="docs/screenshots/simcreate.jpg" width="400" alt="Create SIM Card">
+  <img src="docs/screenshots/simcreated.jpg" width="400" alt="SIM Card Created">
 </p>
 
 ### Database — SIM Card Record
 <p align="center">
-  <img src="docs/screenshots/siminsql.png" width="600" alt="SIM Card in PostgreSQL">
+  <img src="docs/screenshots/siminsql.jpg" width="600" alt="SIM Card in PostgreSQL">
 </p>
 
 ### Deposit Balance
 <p align="center">
-  <img src="docs/screenshots/depositform.png" width="400" alt="Deposit Form">
-  <img src="docs/screenshots/depositsucc.png" width="400" alt="Deposit Successful">
+  <img src="docs/screenshots/depositform.jpg" width="400" alt="Deposit Form">
+  <img src="docs/screenshots/depositsucc.jpg" width="400" alt="Deposit Successful">
 </p>
 
 ### Database — Account Balance
 <p align="center">
-  <img src="docs/screenshots/db-balance.png" width="400" alt="Balance in PostgreSQL">
+  <img src="docs/screenshots/db-balance.jpg" width="400" alt="Balance in PostgreSQL">
 </p>
 
 ### Sign In
 <p align="center">
-  <img src="docs/screenshots/signin-form.png" width="400" alt="Sign In Form">
-  <img src="docs/screenshots/signin-success.png" width="400" alt="Logged In">
+  <img src="docs/screenshots/signin-form.jpg" width="400" alt="Sign In Form">
+  <img src="docs/screenshots/signin-success.jpg" width="400" alt="Logged In">
 </p>
 
 ### Customer Information
 <p align="center">
-  <img src="docs/screenshots/customer-info.png" width="400" alt="Customer Information">
+  <img src="docs/screenshots/customer-info.jpg" width="400" alt="Customer Information">
 </p>
 
 ---
