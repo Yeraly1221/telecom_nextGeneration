@@ -221,7 +221,7 @@ Subscription request example:
 
 - `compose.yaml` starts only PostgreSQL, not the application or MailDev.
 - Some endpoint names still contain typos in code, such as `deposite` and `makeSubscip`.
-- Access control still needs improvement because resources are identified by path IDs.
+- Most sensitive endpoints now verify ownership, but the API still uses path IDs instead of `/me`-style routes.
 
 ## Troubleshooting
 

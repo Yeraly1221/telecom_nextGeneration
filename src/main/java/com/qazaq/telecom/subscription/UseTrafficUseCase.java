@@ -2,13 +2,10 @@ package com.qazaq.telecom.subscription;
 
 
 import com.qazaq.telecom.account.Account;
-import com.qazaq.telecom.account.AccountRepository;
 import com.qazaq.telecom.account.AccountService;
 import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.payment.PaymentRequest;
-import com.qazaq.telecom.payment.PaymentService;
 import com.qazaq.telecom.payment.PaymentType;
-import com.qazaq.telecom.usagerecords.UsageRecordService;
 import com.qazaq.telecom.usagerecords.UsageRecords;
 import com.qazaq.telecom.usagerecords.UsageRecordsRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +19,6 @@ import java.math.BigDecimal;
 public class UseTrafficUseCase {
 
     public final SubscriptionService subscriptionService;
-    public final UsageRecordService usageRecordService;
     public final AccountService accountService;
     private final UsageRecordsRepository usageRecordsRepository;
 

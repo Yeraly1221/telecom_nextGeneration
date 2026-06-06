@@ -6,7 +6,6 @@ import com.qazaq.telecom.customer.CustomerRepository;
 import com.qazaq.telecom.payment.Payment;
 import com.qazaq.telecom.simcard.SimCard;
 import com.qazaq.telecom.subscription.Subscription;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

@@ -6,12 +6,10 @@ import com.qazaq.telecom.customer.CustomerRepository;
 import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.security.access.CurrentCustomerService;
 import jakarta.transaction.Transactional;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@Builder
 @RequiredArgsConstructor
 public class SimCardService {
 

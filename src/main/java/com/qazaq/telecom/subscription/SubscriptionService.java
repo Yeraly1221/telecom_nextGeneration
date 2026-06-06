@@ -1,21 +1,17 @@
 package com.qazaq.telecom.subscription;
 
 
-import com.qazaq.telecom.customer.CustomerRepository;
 import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.simcard.SimCard;
 import com.qazaq.telecom.simcard.SimCardRepository;
 import com.qazaq.telecom.security.access.CurrentCustomerService;
 import com.qazaq.telecom.tariff.Tariff;
 import com.qazaq.telecom.tariff.TariffRepository;
-import com.qazaq.telecom.usagerecords.TrafficType;
-import com.qazaq.telecom.usagerecords.UsageRecordsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.Callable;
 
 @Service
 @RequiredArgsConstructor

@@ -3,7 +3,6 @@ package com.qazaq.telecom.customer;
 
 import com.qazaq.telecom.account.Account;
 import com.qazaq.telecom.exception.BusinessException;
-import com.qazaq.telecom.simcard.SimCardService;
 import com.qazaq.telecom.security.access.CurrentCustomerService;
 import lombok.RequiredArgsConstructor;
 import jakarta.transaction.Transactional;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     public final CustomerRepository customerRepository;
-    private final SimCardService simCardService;
     private final CurrentCustomerService currentCustomerService;
 
 
