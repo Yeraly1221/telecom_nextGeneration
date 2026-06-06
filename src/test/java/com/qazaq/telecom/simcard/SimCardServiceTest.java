@@ -3,6 +3,7 @@ package com.qazaq.telecom.simcard;
 import com.qazaq.telecom.customer.Customer;
 import com.qazaq.telecom.customer.CustomerRepository;
 import com.qazaq.telecom.exception.BusinessException;
+import com.qazaq.telecom.security.access.CurrentCustomerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,6 +29,9 @@ class SimCardServiceTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private CurrentCustomerService currentCustomerService;
+
     @InjectMocks
     private SimCardService simCardService;
 
@@ -37,6 +41,7 @@ class SimCardServiceTest {
         GetSimCardRequest request = new GetSimCardRequest("+77001234567");
         when(simCardRepository.existsSimCardByPhoneNumber("+77001234567")).thenReturn(false);
         when(customerRepository.findCustomerById(3L)).thenReturn(Optional.of(customer));
+        when(currentCustomerService.requireCustomer(3L)).thenReturn(customer);
 
         simCardService.getSimCard(3L, request);
 

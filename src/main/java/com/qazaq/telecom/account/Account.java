@@ -26,7 +26,7 @@ public class Account {
     private Long id;
 
     @Column(nullable = false, name = "balance")
-    private Double balance;
+    private BigDecimal balance;
 
     @OneToOne(mappedBy = "account", fetch = FetchType.EAGER)
     private Customer customer;

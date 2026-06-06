@@ -1,6 +1,7 @@
 package com.qazaq.telecom.security.auth;
 
 import com.qazaq.telecom.account.Account;
+import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.security.configuration.JwtService;
 import com.qazaq.telecom.security.email.EmailSender;
 import com.qazaq.telecom.customer.Customer;
@@ -11,6 +12,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.util.HtmlUtils;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +27,19 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final EmailSender emailSender;
 
+    @Value("${application.base-url}")
+    private String baseUrl;
+
     public String register(RegisterRequest request){
+        if (request == null) {
+            throw new BusinessException("Registration request is required");
+        }
+        if (request.getEmail() == null || request.getPassword() == null) {
+            throw new BusinessException("Email and password are required");
+        }
 
         if(customerRepository.existsByEmail(request.getEmail())){
-            throw new IllegalStateException("Email already exists");
+            throw new BusinessException("Email already exists");
         }
 
         var user = Customer
@@ -35,7 +49,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .account(Account.builder()
-                        .balance(0.0)
+                        .balance(BigDecimal.ZERO)
                         .build())
                 .role(Role.USER)
                 .enabled(false)
@@ -45,7 +59,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
 
         // отправка письма
-        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
+        String link = baseUrl + "/api/v1/auth/confirm?token=" + jwtToken;
         emailSender.send(
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link)
@@ -62,28 +76,27 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse confirm(String token) {
-        // 1. Извлечь email из токена
-        String userEmail = jwtService.extractUsername(token);
+        final String userEmail;
+        try {
+            userEmail = jwtService.extractUsername(token);
+        } catch (Exception ex) {
+            throw new BusinessException("Token expired or invalid");
+        }
 
-        // 2. Найти пользователя
         Customer customer = customerRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalStateException("Customer not found"));
+                .orElseThrow(() -> new BusinessException("Customer not found"));
 
-        // 3. Проверить токен
         if (!jwtService.isTokenValid(token, customer)) {
-            throw new IllegalStateException("Token expired or invalid");
+            throw new BusinessException("Token expired or invalid");
         }
 
-        // 4. Проверить не подтверждён ли уже
-        if (customer.getEnabled() == true) {
-            throw new IllegalStateException("Email already confirmed");
+        if (Boolean.TRUE.equals(customer.getEnabled())) {
+            throw new BusinessException("Email already confirmed");
         }
 
-        // 5. Активировать пользователя
         customer.setEnabled(true);
         customerRepository.save(customer);
 
-        // 6. Выдать новый JWT для входа
         String newToken = jwtService.generateToken(customer);
         return AuthenticationResponse.builder()
                 .token(newToken)
@@ -92,6 +105,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
+        if (request == null) {
+            throw new BusinessException("Login request is required");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -101,7 +117,7 @@ public class AuthenticationService {
         );
 
         var user = customerRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new BusinessException("Customer not found"));
 
 
         var jwtToken = jwtService.generateToken(user);
@@ -114,8 +130,9 @@ public class AuthenticationService {
     }
 
     private String buildEmail(String name, String link) {
+        String safeName = HtmlUtils.htmlEscape(name == null ? "" : name);
         return "<div style='font-family: Arial, sans-serif; max-width: 600px;'>"
-                + "<h2>Hi " + name + "!</h2>"
+                + "<h2>Hi " + safeName + "!</h2>"
                 + "<p>Thanks for registering. Please confirm your email:</p>"
                 + "<a href='" + link + "' "
                 + "style='background-color: #4CAF50; color: white; padding: 14px 20px; "

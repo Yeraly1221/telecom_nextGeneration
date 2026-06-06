@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.verify;
@@ -26,7 +28,7 @@ class TariffServiceTest {
         Subscription subscription = Subscription.builder().id(2L).build();
         AddTariffRequest request = AddTariffRequest.builder()
                 .name("Starter")
-                .price(9.99)
+                .price(BigDecimal.valueOf(9.99))
                 .mbyte(15)
                 .minute(120)
                 .sms(30)
@@ -39,7 +41,7 @@ class TariffServiceTest {
         verify(tariffRepository).save(captor.capture());
         Tariff tariff = captor.getValue();
         assertEquals("Starter", tariff.getName());
-        assertEquals(9.99, tariff.getPrice());
+        assertEquals(BigDecimal.valueOf(9.99), tariff.getPrice());
         assertEquals(15, tariff.getMegabyteLimit());
         assertEquals(120, tariff.getMinutesLimit());
         assertEquals(30, tariff.getSmsLimit());

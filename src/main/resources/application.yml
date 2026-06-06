@@ -5,9 +5,9 @@ spring:
 
 # Shared app settings (override per-profile as needed)
 application:
+  base-url: ${APPLICATION_BASE_URL:http://localhost:8080}
   security:
     jwt:
       # For prod, set APPLICATION_SECURITY_JWT_SECRET_KEY (base64).
       secret-key: ${APPLICATION_SECURITY_JWT_SECRET_KEY:}
       expiration: ${APPLICATION_SECURITY_JWT_EXPIRATION:900000}
-

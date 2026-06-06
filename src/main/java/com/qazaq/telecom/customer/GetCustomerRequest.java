@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -23,5 +25,5 @@ public class GetCustomerRequest {
     private String email;
 
 
-    private Double balance;
+    private BigDecimal balance;
 }

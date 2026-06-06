@@ -6,6 +6,7 @@ import com.qazaq.telecom.payment.Payment;
 import com.qazaq.telecom.payment.PaymentRepository;
 import com.qazaq.telecom.payment.PaymentRequest;
 import com.qazaq.telecom.payment.TransactionType;
+import com.qazaq.telecom.security.access.CurrentCustomerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,20 +19,28 @@ public class AccountService {
 
     public final AccountRepository accountRepository;
     public final PaymentRepository paymentRepository;
+    private final CurrentCustomerService currentCustomerService;
 
     @Transactional
     public void withDrawBalance(Long id, PaymentRequest paymentRequest){
+        if (paymentRequest == null || paymentRequest.getAmount() == null || paymentRequest.getPaymentType() == null) {
+            throw new BusinessException("Payment request is required");
+        }
         Account account = accountRepository.findAccountById(id)
                 .orElseThrow(() -> new BusinessException("Account not found"));
+        if (account.getCustomer() == null) {
+            throw new BusinessException("Account is not linked to a customer");
+        }
+        currentCustomerService.requireCustomer(account.getCustomer().getId());
 
-        Double balance = account.getBalance();
-        Double price = paymentRequest.getAmount();
+        BigDecimal balance = account.getBalance();
+        BigDecimal price = paymentRequest.getAmount();
 
 
-        if(price < 0.0){
+        if(price.compareTo(BigDecimal.ZERO) < 0){
             throw new  BusinessException("price can not be lower then 0");
         }
-        if(balance - price < 0.0){
+        if(balance.compareTo(price) < 0){
             throw new BusinessException("You do not have enough money on balance");
         }
 
@@ -44,20 +53,22 @@ public class AccountService {
         paymentRepository.save(payment);
 
 
-        account.setBalance(balance - price);
+        account.setBalance(balance.subtract(price));
         accountRepository.save(account);
     }
 
     @Transactional
     public void  depositBalance(Long id, PaymentRequest paymentRequest){
-        Account account = accountRepository.findAccountById(id)
-                .orElseThrow(() -> new BusinessException("Account not found"));
+        if (paymentRequest == null || paymentRequest.getAmount() == null || paymentRequest.getPaymentType() == null) {
+            throw new BusinessException("Payment request is required");
+        }
+        Account account = currentCustomerService.requireAccount(id);
 
-        Double balance = account.getBalance();
-        Double amount = paymentRequest.getAmount();
+        BigDecimal balance = account.getBalance();
+        BigDecimal amount = paymentRequest.getAmount();
 
 
-        if(amount < 0.0){
+        if(amount.compareTo(BigDecimal.ZERO) < 0){
             throw new  BusinessException("amount can not be lower then 0");
         }
 
@@ -70,13 +81,12 @@ public class AccountService {
         paymentRepository.save(payment);
 
 
-        account.setBalance(balance + amount);
+        account.setBalance(balance.add(amount));
         accountRepository.save(account);
     }
 
     public AccountRequest getBalance(Long id){
-        Account account = accountRepository.findAccountById(id)
-                .orElseThrow(() -> new BusinessException("Account not found"));
+        Account account = currentCustomerService.requireAccount(id);
 
         return AccountRequest.builder()
                 .amount(account.getBalance())

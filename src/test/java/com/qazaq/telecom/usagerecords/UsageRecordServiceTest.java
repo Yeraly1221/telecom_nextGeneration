@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ class UsageRecordServiceTest {
                 .usageRecords(new ArrayList<>())
                 .build();
         GetUsageRecord request = GetUsageRecord.builder()
-                .amount(2.5)
+                .amount(BigDecimal.valueOf(2.5))
                 .trafficType(TrafficType.MEGABYTE)
                 .build();
         when(subscriptionRepository.findSubscriptionById(13L)).thenReturn(Optional.of(subscription));
@@ -48,7 +49,7 @@ class UsageRecordServiceTest {
         ArgumentCaptor<UsageRecords> captor = ArgumentCaptor.forClass(UsageRecords.class);
         verify(usageRecordsRepository).save(captor.capture());
         UsageRecords usageRecord = captor.getValue();
-        assertEquals(2.5, usageRecord.getAmount());
+        assertEquals(BigDecimal.valueOf(2.5), usageRecord.getAmount());
         assertEquals(TrafficType.MEGABYTE, usageRecord.getTrafficType());
         assertSame(subscription, usageRecord.getSubscription());
 
@@ -60,7 +61,7 @@ class UsageRecordServiceTest {
     @Test
     void createUsageRecordShouldFailWhenSubscriptionDoesNotExist() {
         GetUsageRecord request = GetUsageRecord.builder()
-                .amount(1.0)
+                .amount(BigDecimal.valueOf(1.0))
                 .trafficType(TrafficType.SMS)
                 .build();
         when(subscriptionRepository.findSubscriptionById(13L)).thenReturn(Optional.empty());

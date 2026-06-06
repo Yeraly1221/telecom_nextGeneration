@@ -3,6 +3,8 @@ package com.qazaq.telecom.subscription;
 import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.simcard.SimCard;
 import com.qazaq.telecom.simcard.SimCardRepository;
+import com.qazaq.telecom.customer.Customer;
+import com.qazaq.telecom.security.access.CurrentCustomerService;
 import com.qazaq.telecom.tariff.Tariff;
 import com.qazaq.telecom.tariff.TariffRepository;
 import org.junit.jupiter.api.Test;
@@ -35,12 +37,18 @@ class SubscriptionServiceTest {
     @Mock
     private TariffRepository tariffRepository;
 
+    @Mock
+    private CurrentCustomerService currentCustomerService;
+
     @InjectMocks
     private SubscriptionService subscriptionService;
 
     @Test
     void createSubscriptionShouldCreateSubscriptionAndLinkEntities() {
-        SimCard simCard = SimCard.builder().id(5L).build();
+        Customer customer = Customer.builder().id(5L).build();
+        SimCard simCard = SimCard.builder().id(5L).customer(customer).build();
+        customer.setSimCards(new ArrayList<>());
+        customer.getSimCards().add(simCard);
         Tariff tariff = Tariff.builder()
                 .id(9L)
                 .name("Premium")
@@ -52,6 +60,7 @@ class SubscriptionServiceTest {
         when(simCardRepository.findSimCardById(5L)).thenReturn(Optional.of(simCard));
         when(subscriptionRepository.existsSubscriptionsBySimCardId(5L)).thenReturn(false);
         when(tariffRepository.findTariffById(9L)).thenReturn(Optional.of(tariff));
+        org.mockito.Mockito.doNothing().when(currentCustomerService).ensureSimCardOwner(simCard);
 
         subscriptionService.createSubscription(5L, 9L);
 
@@ -87,8 +96,13 @@ class SubscriptionServiceTest {
                 .smsLimit(150)
                 .subscriptions(new ArrayList<>())
                 .build();
+        Customer customer = Customer.builder().id(4L).build();
+        SimCard simCard = SimCard.builder().customer(customer).build();
+        customer.setSimCards(new ArrayList<>());
+        customer.getSimCards().add(simCard);
         Subscription subscription = Subscription.builder()
                 .id(4L)
+                .simCard(simCard)
                 .tariffName("Old")
                 .megabyte(10)
                 .minutes(20)
@@ -98,6 +112,7 @@ class SubscriptionServiceTest {
                 .build();
         when(tariffRepository.findTariffById(11L)).thenReturn(Optional.of(tariff));
         when(subscriptionRepository.findSubscriptionById(4L)).thenReturn(Optional.of(subscription));
+        org.mockito.Mockito.doNothing().when(currentCustomerService).ensureSubscriptionOwner(subscription);
 
         subscriptionService.changeTariff(4L, 11L);
 
@@ -117,8 +132,13 @@ class SubscriptionServiceTest {
     void getRemainingShouldMapSubscriptionToResponse() {
         LocalDateTime start = LocalDateTime.now().minusDays(2);
         LocalDateTime end = LocalDateTime.now().plusDays(28);
+        Customer customer = Customer.builder().id(8L).build();
+        SimCard simCard = SimCard.builder().customer(customer).build();
+        customer.setSimCards(new ArrayList<>());
+        customer.getSimCards().add(simCard);
         Subscription subscription = Subscription.builder()
                 .id(8L)
+                .simCard(simCard)
                 .tariffName("Lite")
                 .megabyte(40)
                 .minutes(60)
@@ -127,6 +147,7 @@ class SubscriptionServiceTest {
                 .endDate(end)
                 .build();
         when(subscriptionRepository.findSubscriptionById(8L)).thenReturn(Optional.of(subscription));
+        org.mockito.Mockito.doNothing().when(currentCustomerService).ensureSubscriptionOwner(subscription);
 
         CurrentRemainRequest result = subscriptionService.getRemaining(8L);
 
@@ -148,8 +169,13 @@ class SubscriptionServiceTest {
                 .minutesLimit(700)
                 .smsLimit(250)
                 .build();
+        Customer customer = Customer.builder().id(12L).build();
+        SimCard simCard = SimCard.builder().customer(customer).build();
+        customer.setSimCards(new ArrayList<>());
+        customer.getSimCards().add(simCard);
         Subscription subscription = Subscription.builder()
                 .id(12L)
+                .simCard(simCard)
                 .tariff(tariff)
                 .megabyte(1)
                 .minutes(2)
@@ -158,6 +184,7 @@ class SubscriptionServiceTest {
                 .endDate(oldEnd)
                 .build();
         when(subscriptionRepository.findSubscriptionById(12L)).thenReturn(Optional.of(subscription));
+        org.mockito.Mockito.doNothing().when(currentCustomerService).ensureSubscriptionOwner(subscription);
 
         subscriptionService.updateTariff(12L);
 

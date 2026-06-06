@@ -25,21 +25,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
         http
                 .csrf(csrf -> csrf.disable())
-                //Зашита о межсайтовых запросов отключаем
                 .authorizeHttpRequests(auth -> auth
-
-                                .requestMatchers("/**").permitAll()  // подтверждение email
-                                
+                        .requestMatchers("/api/v1/auth/**", "/error", "/actuator/health", "/actuator/info").permitAll()
                         .anyRequest().authenticated()
-                        //тут мы даем дабро все кто кидает запрос с url /api/public/**
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        //Это уже из RestApi Он не помнит запросы и не хранит их в памяти
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-                // поставил Jwt филтер до стандартного
 
         return http.build();
     }

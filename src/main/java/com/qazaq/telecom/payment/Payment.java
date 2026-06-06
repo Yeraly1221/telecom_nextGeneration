@@ -24,7 +24,7 @@ public class Payment {
 
     @Column(nullable = false,
             name = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
     @Column(name = "transaction_type",
             nullable = false)

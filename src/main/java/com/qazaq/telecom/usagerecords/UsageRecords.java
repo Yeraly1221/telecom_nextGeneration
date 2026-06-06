@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
@@ -28,7 +29,7 @@ public class UsageRecords {
 
     @Column(nullable = false,
     name = "payed")
-    private Double payed;
+    private BigDecimal payed;
 
 
     @Enumerated(EnumType.STRING)
@@ -51,11 +52,11 @@ public class UsageRecords {
     private Subscription subscription;
 
     // Compatibility for callers/tests that use the name "amount" for this field.
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return payed;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.payed = amount;
     }
 }

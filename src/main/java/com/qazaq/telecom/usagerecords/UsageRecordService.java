@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class UsageRecordService {
@@ -20,7 +22,7 @@ public class UsageRecordService {
         Subscription subscription = subscriptionRepository.findSubscriptionById(subscription_id)
                 .orElseThrow(() -> new BusinessException("Subscription not found"));
 
-        Double amount = getUsageRecord.getAmount() != null ? getUsageRecord.getAmount() : getUsageRecord.getPayed();
+        BigDecimal amount = getUsageRecord.getAmount() != null ? getUsageRecord.getAmount() : getUsageRecord.getPayed();
 
         UsageRecords usageRecords = UsageRecords.builder()
                 .usedTraffic(getUsageRecord.getUsedTraffic())

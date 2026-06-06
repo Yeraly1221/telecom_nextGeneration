@@ -4,6 +4,7 @@ package com.qazaq.telecom.simcard;
 import com.qazaq.telecom.customer.Customer;
 import com.qazaq.telecom.customer.CustomerRepository;
 import com.qazaq.telecom.exception.BusinessException;
+import com.qazaq.telecom.security.access.CurrentCustomerService;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class SimCardService {
 
     public final SimCardRepository simCardRepository;
     public final CustomerRepository customerRepository;
+    private final CurrentCustomerService currentCustomerService;
 
     // Backward-compatible name (some callers/tests use this)
     @Transactional
@@ -24,10 +26,17 @@ public class SimCardService {
     }
 
     @Transactional
+    public void getSimCard(Long customer_id, GetSimCardRequest request) {
+        createSimCard(customer_id, request);
+    }
+
+    @Transactional
     public void  createSimCard(Long customer_id, GetSimCardRequest request){
         if(request == null){
             throw new BusinessException("sim card request can not be a null");
         }
+
+        currentCustomerService.requireCustomer(customer_id);
 
 
         if(simCardRepository.existsSimCardByPhoneNumber(request.getPhoneNumber())){
@@ -51,6 +60,7 @@ public class SimCardService {
     public GetPhoneNumberRequest getPhoneNumber(Long id){
         SimCard simCard = simCardRepository.findSimCardById(id)
                 .orElseThrow(() -> new BusinessException("Sim card not found"));
+        currentCustomerService.ensureSimCardOwner(simCard);
 
         return GetPhoneNumberRequest.builder()
                 .phoneNumber(simCard.getPhoneNumber())

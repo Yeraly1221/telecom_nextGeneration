@@ -15,6 +15,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class UseTrafficUseCase {
@@ -26,29 +28,33 @@ public class UseTrafficUseCase {
 
     @Transactional
     public void useTraffic(Long subscriptionId, UsedTrafficRequest usedTrafficRequest) {
+        if (usedTrafficRequest == null || usedTrafficRequest.getUsedTraffic() == null || usedTrafficRequest.getTrafficType() == null) {
+            throw new BusinessException("Traffic usage request is required");
+        }
         Subscription subscription = subscriptionService.getSubscription(subscriptionId);
 
-        if (usedTrafficRequest.getUsedTraffic() < 0.0) {
+        if (usedTrafficRequest.getUsedTraffic() < 0) {
             throw new BusinessException("Used traffic can not be lover then 0.0");
         }
 
         Integer currentTraffic = 0;
-        Double trafficPrice = 0.0;
+        BigDecimal trafficPrice = BigDecimal.ZERO;
         Integer usedTraffic = usedTrafficRequest.getUsedTraffic();
-        Double payed = 0.0;
+        BigDecimal payed = BigDecimal.ZERO;
 
         switch (usedTrafficRequest.getTrafficType()) {
-            case MEGABYTE -> { currentTraffic = subscription.getMegabyte(); trafficPrice = 20.0; }
-            case SMS      -> { currentTraffic = subscription.getSms();      trafficPrice = 50.0; }
-            case MINUTES  -> { currentTraffic = subscription.getMinutes();  trafficPrice = 35.0; }
+            case MEGABYTE -> { currentTraffic = subscription.getMegabyte(); trafficPrice = BigDecimal.valueOf(20.0); }
+            case SMS      -> { currentTraffic = subscription.getSms();      trafficPrice = BigDecimal.valueOf(50.0); }
+            case MINUTES  -> { currentTraffic = subscription.getMinutes();  trafficPrice = BigDecimal.valueOf(35.0); }
             default -> throw new BusinessException("Unknown traffic type");
         }
 
         if(currentTraffic < usedTraffic){
+            Integer overage = usedTraffic - currentTraffic;
             currentTraffic = 0;
-            payed = (usedTraffic - currentTraffic) * trafficPrice ;
+            payed = trafficPrice.multiply(BigDecimal.valueOf(overage));
             Account account = subscription.getSimCard().getCustomer().getAccount();
-            if(account.getBalance() < payed){
+            if(account.getBalance().compareTo(payed) < 0){
                 throw new BusinessException("Customer does not have enough money");
             }
             accountService.withDrawBalance(account.getId(),
@@ -57,7 +63,7 @@ public class UseTrafficUseCase {
                             .amount(payed)
                             .build());
         }else {
-            payed = 0.0;
+            payed = BigDecimal.ZERO;
             currentTraffic -= usedTraffic;
         }
 

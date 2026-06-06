@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -26,7 +24,6 @@ public class EmailService implements EmailSender{
     private String fromEmail;
 
     @Override
-    @Async
     public void send(String to, String email){
         try{
             MimeMessage mimeMessage = mailSender.createMimeMessage();

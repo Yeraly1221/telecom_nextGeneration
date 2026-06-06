@@ -32,7 +32,7 @@ public class Tariff {
 
     @Column(name = "price",
             nullable = false)
-    private Double price;
+    private BigDecimal price;
 
 
     @Column(name = "internet_limit",

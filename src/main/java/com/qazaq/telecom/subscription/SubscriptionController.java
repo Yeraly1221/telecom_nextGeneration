@@ -2,6 +2,7 @@ package com.qazaq.telecom.subscription;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/subscription")
@@ -11,12 +12,12 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @PostMapping("/makeSubscip/{id}")
-    public void CreateSubscription(@PathVariable Long id, @RequestBody SubscriptionRequest subscriptionRequest){
+    public void CreateSubscription(@PathVariable Long id, @Valid @RequestBody SubscriptionRequest subscriptionRequest){
         subscriptionService.createSubscription(id, subscriptionRequest.getTariff_id());
     }
 
     @PutMapping("/changeTariff/{id}")
-    public void ChangeTariff(@PathVariable Long id, @RequestBody SubscriptionRequest subscriptionRequest){
+    public void ChangeTariff(@PathVariable Long id, @Valid @RequestBody SubscriptionRequest subscriptionRequest){
         subscriptionService.changeTariff(id, subscriptionRequest.getTariff_id());
     }
 

@@ -5,6 +5,7 @@ import com.qazaq.telecom.customer.CustomerRepository;
 import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.simcard.SimCard;
 import com.qazaq.telecom.simcard.SimCardRepository;
+import com.qazaq.telecom.security.access.CurrentCustomerService;
 import com.qazaq.telecom.tariff.Tariff;
 import com.qazaq.telecom.tariff.TariffRepository;
 import com.qazaq.telecom.usagerecords.TrafficType;
@@ -24,12 +25,14 @@ public class SubscriptionService {
     public final SubscriptionRepository subscriptionRepository;
     public final SimCardRepository simCardRepository;
     public final TariffRepository tariffRepository;
+    private final CurrentCustomerService currentCustomerService;
 
 
     @Transactional
     public void createSubscription(Long simCardId, Long tariffId){
         SimCard simCard = simCardRepository.findSimCardById(simCardId)
                 .orElseThrow(() -> new BusinessException("Customer not found"));
+        currentCustomerService.ensureSimCardOwner(simCard);
 
         if(subscriptionRepository.existsSubscriptionsBySimCardId(simCardId)){
             throw new BusinessException("Subscription already exist");
@@ -70,6 +73,9 @@ public class SubscriptionService {
 
         Subscription subscription = subscriptionRepository.findSubscriptionById(subscriptionId)
                 .orElseThrow(() -> new BusinessException("Subscription not found"));
+        currentCustomerService.ensureSubscriptionOwner(subscription);
+
+        Tariff previousTariff = subscription.getTariff();
 
         subscription.setTariff(tariff);
         subscription.setMegabyte(tariff.getMegabyteLimit());
@@ -80,6 +86,10 @@ public class SubscriptionService {
         subscription.setTariffName(tariff.getName());
         subscriptionRepository.save(subscription);
 
+        if (previousTariff != null && !previousTariff.getId().equals(tariff.getId())) {
+            previousTariff.getSubscriptions().remove(subscription);
+            tariffRepository.save(previousTariff);
+        }
         tariff.addSubscription(subscription);
         tariffRepository.save(tariff);
 
@@ -91,6 +101,7 @@ public class SubscriptionService {
 
         Subscription subscription = subscriptionRepository.findSubscriptionById(subscriptionId)
                 .orElseThrow(() -> new BusinessException("Subscription not found"));
+        currentCustomerService.ensureSubscriptionOwner(subscription);
 
         
        return CurrentRemainRequest.builder()
@@ -109,6 +120,7 @@ public class SubscriptionService {
 
         Subscription subscription = subscriptionRepository.findSubscriptionById(subscriptionId)
                 .orElseThrow(() -> new BusinessException("Subscription not found"));
+        currentCustomerService.ensureSubscriptionOwner(subscription);
 
         Tariff tariff = subscription.getTariff();
 
@@ -117,6 +129,7 @@ public class SubscriptionService {
         subscription.setMinutes(tariff.getMinutesLimit());
         subscription.setStartDate(LocalDateTime.now());
         subscription.setEndDate(LocalDateTime.now().plusMonths(1));
+        subscription.setTariffName(tariff.getName());
         subscriptionRepository.save(subscription);
 
     }

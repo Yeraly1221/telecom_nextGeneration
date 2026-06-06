@@ -5,8 +5,8 @@ import com.qazaq.telecom.exception.BusinessException;
 import com.qazaq.telecom.simcard.SimCard;
 import jakarta.persistence.*;
 import lombok.*;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -64,8 +64,11 @@ public class Customer implements UserDetails {
     }
 
     @Override
-    public @NullMarked Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (role == null) {
+            return List.of();
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
 
@@ -75,7 +78,7 @@ public class Customer implements UserDetails {
     }
 
     @Override
-    public @NullMarked String  getUsername() {
+    public String  getUsername() {
         return email; //это логин
     }
 
